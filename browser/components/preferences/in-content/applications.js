@@ -110,7 +110,7 @@ function getLocalHandlerApp(aFile) {
  * An enumeration of items in a JS array.
  *
  * FIXME: use ArrayConverter once it lands (bug 380839).
- * 
+ *
  * @constructor
  */
 function ArrayEnumerator(aItems) {
@@ -455,10 +455,10 @@ HandlerInfoWrapper.prototype = {
  * This object implements nsIHandlerInfo for the feed types.  It's a separate
  * object because we currently store handling information for the feed type
  * in a set of preferences rather than the nsIHandlerService-managed datastore.
- * 
+ *
  * This object inherits from HandlerInfoWrapper in order to get functionality
  * that isn't special to the feed type.
- * 
+ *
  * XXX Should we inherit from HandlerInfoWrapper?  After all, we override
  * most of that wrapper's properties and methods, and we have to dance around
  * the fact that the wrapper expects to have a wrappedHandlerInfo, which we
@@ -469,9 +469,8 @@ function FeedHandlerInfo(aMIMEType) {
   HandlerInfoWrapper.call(this, aMIMEType, null);
 }
 
+FeedHandlerInfp.prototype = Object.create(HandlerInfoWrapper.prototype);
 FeedHandlerInfo.prototype = {
-  __proto__: HandlerInfoWrapper.prototype,
-
   //**************************************************************************//
   // Convenience Utils
 
@@ -775,35 +774,29 @@ FeedHandlerInfo.prototype = {
 
 };
 
-var feedHandlerInfo = {
-  __proto__: new FeedHandlerInfo(TYPE_MAYBE_FEED),
-  _prefSelectedApp: PREF_FEED_SELECTED_APP, 
-  _prefSelectedWeb: PREF_FEED_SELECTED_WEB, 
-  _prefSelectedAction: PREF_FEED_SELECTED_ACTION, 
-  _prefSelectedReader: PREF_FEED_SELECTED_READER,
-  _smallIcon: "chrome://browser/skin/feeds/feedIcon16.png",
-  _appPrefLabel: "webFeed"
-}
+var feedHandlerInfo = new FeedHandlerInfo(TYPE_MAYBE_FEED);
+feedHandlerInfo._prefSelectedApp = PREF_FEED_SELECTED_APP;
+feedHandlerInfo._prefSelectedWeb = PREF_FEED_SELECTED_WEB;
+feedHandlerInfo._prefSelectedAction = PREF_FEED_SELECTED_ACTION;
+feedHandlerInfo._prefSelectedReader = PREF_FEED_SELECTED_READER;
+feedHandlerInfo._smallIcon = "chrome://browser/skin/feeds/feedIcon16.png";
+feedHandlerInfo._appPrefLabel = "webFeed";
 
-var videoFeedHandlerInfo = {
-  __proto__: new FeedHandlerInfo(TYPE_MAYBE_VIDEO_FEED),
-  _prefSelectedApp: PREF_VIDEO_FEED_SELECTED_APP, 
-  _prefSelectedWeb: PREF_VIDEO_FEED_SELECTED_WEB, 
-  _prefSelectedAction: PREF_VIDEO_FEED_SELECTED_ACTION, 
-  _prefSelectedReader: PREF_VIDEO_FEED_SELECTED_READER,
-  _smallIcon: "chrome://browser/skin/feeds/videoFeedIcon16.png",
-  _appPrefLabel: "videoPodcastFeed"
-}
+var videoFeedHandlerInfo = new FeedHandlerInfo(TYPE_MAYBE_VIDEO_FEED);
+videoFeedHandlerInfo._prefSelectedApp = PREF_VIDEO_FEED_SELECTED_APP;
+videoFeedHandlerInfo._prefSelectedWeb = PREF_VIDEO_FEED_SELECTED_WEB;
+videoFeedHandlerInfo._prefSelectedAction = PREF_VIDEO_FEED_SELECTED_ACTION;
+videoFeedHandlerInfo._prefSelectedReader = PREF_VIDEO_FEED_SELECTED_READER;
+videoFeedHandlerInfo._smallIcon = "chrome://browser/skin/feeds/videoFeedIcon16.png";
+videoFeedHandlerInfo._appPrefLabel = "videoPodcastFeed";
 
-var audioFeedHandlerInfo = {
-  __proto__: new FeedHandlerInfo(TYPE_MAYBE_AUDIO_FEED),
-  _prefSelectedApp: PREF_AUDIO_FEED_SELECTED_APP, 
-  _prefSelectedWeb: PREF_AUDIO_FEED_SELECTED_WEB, 
-  _prefSelectedAction: PREF_AUDIO_FEED_SELECTED_ACTION, 
-  _prefSelectedReader: PREF_AUDIO_FEED_SELECTED_READER,
-  _smallIcon: "chrome://browser/skin/feeds/audioFeedIcon16.png",
-  _appPrefLabel: "audioPodcastFeed"
-}
+var audioFeedHandlerInfo = new FeedHandlerInfo(TYPE_MAYBE_AUDIO_FEED);
+audioFeedHandlerInfo._prefSelectedApp = PREF_AUDIO_FEED_SELECTED_APP;
+audioFeedHandlerInfo._prefSelectedWeb = PREF_AUDIO_FEED_SELECTED_WEB;
+audioFeedHandlerInfo._prefSelectedAction = PREF_AUDIO_FEED_SELECTED_ACTION;
+audioFeedHandlerInfo._prefSelectedReader = PREF_AUDIO_FEED_SELECTED_READER;
+audioFeedHandlerInfo._smallIcon = "chrome://browser/skin/feeds/audioFeedIcon16.png";
+audioFeedHandlerInfo._appPrefLabel = "audioPodcastFeed";
 
 /**
  * InternalHandlerInfoWrapper provides a basic mechanism to create an internal
@@ -817,9 +810,8 @@ function InternalHandlerInfoWrapper(aMIMEType) {
   HandlerInfoWrapper.call(this, aMIMEType, handlerInfo);
 }
 
+InternalHandlerInfoWrapper.prototype = Object.create(HandlerInfoWrapper.prototype);
 InternalHandlerInfoWrapper.prototype = {
-  __proto__: HandlerInfoWrapper.prototype,
-
   // Override store so we so we can notify any code listening for registration
   // or unregistration of this handler.
   store: function() {
@@ -853,7 +845,7 @@ var gApplicationsPane = {
   // The set of types the app knows how to handle.  A hash of HandlerInfoWrapper
   // objects, indexed by type.
   _handledTypes: {},
-  
+
   // The list of types we can show, sorted by the sort column/direction.
   // An array of HandlerInfoWrapper objects.  We build this list when we first
   // load the data and then rebuild it when users change a pref that affects
@@ -954,7 +946,7 @@ var gApplicationsPane = {
       // column, we should remove it.
       document.getElementById("typeColumn").removeAttribute("sortDirection");
     }
-    else 
+    else
       this._sortColumn = document.getElementById("typeColumn");
 
     // Load the data and build the list of handlers.
@@ -1548,7 +1540,7 @@ var gApplicationsPane = {
         break;
       case Ci.nsIHandlerInfo.useHelperApp:
         if (preferredApp)
-          menu.selectedItem = 
+          menu.selectedItem =
             possibleAppMenuItems.filter(v => v.handlerApp.equals(preferredApp))[0];
         break;
       case kActionUsePlugin:
@@ -1755,7 +1747,7 @@ var gApplicationsPane = {
 
     if (isFeedType(handlerInfo.type)) {
       // MIME info will be null, create a temp object.
-      params.mimeInfo = this._mimeSvc.getFromTypeAndExtension(handlerInfo.type, 
+      params.mimeInfo = this._mimeSvc.getFromTypeAndExtension(handlerInfo.type,
                                                  handlerInfo.primaryExtension);
     } else {
       params.mimeInfo = handlerInfo.wrappedHandlerInfo;
