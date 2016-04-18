@@ -6268,6 +6268,21 @@ function convertFromUnicode(charset, str)
   }
 }
 
+function undoAllClosedTabs(closedTabsLength) {
+  var blankTabToRemove;
+  if (gBrowser.tabs.length == 1 && isTabEmpty(gBrowser.selectedTab)) {
+    blankTabToRemove = gBrowser.selectedTab;
+  }
+
+  for (var i = 0; i < closedTabsLength; i++) {
+    undoCloseTab();
+  }
+
+  if (blankTabToRemove) {
+    gBrowser.removeTab(blankTabToRemove);
+  }
+}
+
 /**
  * Re-open a closed tab.
  * @param aIndex
@@ -6276,16 +6291,9 @@ function convertFromUnicode(charset, str)
  */
 function undoCloseTab(aIndex) {
   // wallpaper patch to prevent an unnecessary blank tab (bug 343895)
-  var blankTabToRemove = null;
-  if (gBrowser.tabs.length == 1 && isTabEmpty(gBrowser.selectedTab))
-    blankTabToRemove = gBrowser.selectedTab;
-
   var tab = null;
   if (SessionStore.getClosedTabCount(window) > (aIndex || 0)) {
     tab = SessionStore.undoCloseTab(window, aIndex || 0);
-
-    if (blankTabToRemove)
-      gBrowser.removeTab(blankTabToRemove);
   }
 
   return tab;
