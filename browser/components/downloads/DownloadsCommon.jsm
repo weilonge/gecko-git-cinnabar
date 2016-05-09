@@ -348,6 +348,7 @@ this.DownloadsCommon = {
       numDownloading: 0,
       totalSize: 0,
       totalTransferred: 0,
+      totalSpeed: 0,
       // slowestSpeed is Infinity so that we can use Math.min to
       // find the slowest speed. We'll set this to 0 afterwards if
       // it's still at Infinity by the time we're done iterating all
@@ -380,6 +381,7 @@ this.DownloadsCommon = {
       } else if (download.hasProgress) {
         summary.totalSize += download.totalBytes;
         summary.totalTransferred += download.currentBytes;
+        summary.totalSpeed += download.speed;
       }
     }
 
@@ -1503,6 +1505,8 @@ DownloadsSummaryData.prototype = {
                                        .otherDownloads2(summary.numActive);
     this._percentComplete = summary.percentComplete;
 
+    this._totalSpeed = summary.totalSpeed;
+
     // If all downloads are paused, show the progress indicator as paused.
     this._showingProgress = summary.numDownloading > 0 ||
                             summary.numPaused > 0;
@@ -1520,8 +1524,8 @@ DownloadsSummaryData.prototype = {
         this._lastTimeLeft = DownloadsCommon.smoothSeconds(summary.rawTimeLeft,
                                                            this._lastTimeLeft);
       }
-      [this._details] = DownloadUtils.getDownloadStatusNoRate(
-        summary.totalTransferred, summary.totalSize, summary.slowestSpeed,
+      [this._details] = DownloadUtils.getDownloadStatus(
+        summary.totalTransferred, summary.totalSize, summary.totalSpeed,
         this._lastTimeLeft);
     }
   },
