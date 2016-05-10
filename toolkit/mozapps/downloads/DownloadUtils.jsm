@@ -314,7 +314,10 @@ this.DownloadUtils = {
 
       // Only show minutes for under 1 hour unless there's a few minutes left;
       // or the second pair is 0.
-      if ((aSeconds < 3600 && time1 >= 4) || time2 == 0) {
+      if (aSeconds >= 3600) {
+        timeLeft = gBundle.formatStringFromName(gStr.timeLeftSingle,
+                                                [pair1], 1);
+      } else if ((aSeconds < 3600 && time1 >= 4) || time2 == 0) {
         timeLeft = gBundle.formatStringFromName(gStr.timeLeftSingle,
                                                 [pair1], 1);
       } else {
