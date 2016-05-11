@@ -235,6 +235,7 @@ const DownloadsPanel = {
       setTimeout(() => this._openPopupIfDataReady(), 0);
     });
 
+    DownloadsCommon.clearDownloadsStatus();
     DownloadsCommon.log("Waiting for the downloads panel to appear.");
     this._state = this.kStateWaitingData;
   },

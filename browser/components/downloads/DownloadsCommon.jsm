@@ -144,6 +144,7 @@ this.DownloadsCommon = {
   ATTENTION_SUCCESS: "success",
   ATTENTION_WARNING: "warning",
   ATTENTION_SEVERE: "severe",
+  downloadsStatus: {},
 
   /**
    * Returns an object whose keys are the string names from the downloads string
@@ -346,6 +347,8 @@ this.DownloadsCommon = {
       numActive: 0,
       numPaused: 0,
       numDownloading: 0,
+      numCompleted: 0,
+      numFailed: 0,
       totalSize: 0,
       totalTransferred: 0,
       totalSpeed: 0,
@@ -378,6 +381,7 @@ this.DownloadsCommon = {
       if (download.succeeded) {
         summary.totalSize += download.target.size;
         summary.totalTransferred += download.target.size;
+        this.downloadsStatus.completed += 1;
       } else if (download.hasProgress) {
         summary.totalSize += download.totalBytes;
         summary.totalTransferred += download.currentBytes;
@@ -394,7 +398,14 @@ this.DownloadsCommon = {
       summary.slowestSpeed = 0;
     }
 
+    summary.numCompleted = this.downloadsStatus.completed;
+    summary.numFailed = this.downloadsStatus.failed;
+
     return summary;
+  },
+
+  clearDownloadsStatus() {
+    this.downloadsStatus = {completed: 0, failed: 0};
   },
 
   /**
@@ -1503,6 +1514,8 @@ DownloadsSummaryData.prototype = {
 
     this._description = DownloadsCommon.strings
                                        .otherDownloads2(summary.numActive);
+    this._description += ", " + summary.numCompleted + ", " + summary.numFailed;
+
     this._percentComplete = summary.percentComplete;
 
     this._totalSpeed = summary.totalSpeed;
