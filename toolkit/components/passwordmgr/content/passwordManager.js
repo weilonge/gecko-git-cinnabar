@@ -24,6 +24,7 @@ function SignonsStartup() {
   kSignonBundle = document.getElementById("signonBundle");
   document.getElementById("togglePasswords").label = kSignonBundle.getString("showPasswords");
   document.getElementById("togglePasswords").accessKey = kSignonBundle.getString("showPasswordsAccessKey");
+  document.getElementById("togglePasswords").setAttribute("disabled", "true");
   document.getElementById("signonsIntro").textContent = kSignonBundle.getString("loginsDescriptionAll");
 
   let treecols = document.getElementsByTagName("treecols")[0];
@@ -132,6 +133,13 @@ var signonsTreeView = {
     if (column.element.getAttribute("id") == "siteCol")
       return "ltr";
 
+    if (column.element.getAttribute("id") == "passwordCol") {
+      let selections = GetTreeSelections(signonsTree);
+      if (showingPasswords && selections.length && selections.indexOf(row) !== -1) {
+        return "plainText";
+      }
+    }
+
     return "";
   },
   setCellText(row, col, value) {
@@ -184,10 +192,8 @@ function LoadSignons() {
   var toggle = document.getElementById("togglePasswords");
   if (signons.length == 0) {
     element.setAttribute("disabled", "true");
-    toggle.setAttribute("disabled", "true");
   } else {
     element.removeAttribute("disabled");
-    toggle.removeAttribute("disabled");
   }
 
   return true;
@@ -197,8 +203,10 @@ function SignonSelected() {
   var selections = GetTreeSelections(signonsTree);
   if (selections.length) {
     document.getElementById("removeSignon").removeAttribute("disabled");
+    document.getElementById("togglePasswords").removeAttribute("disabled");
   } else {
     document.getElementById("removeSignon").setAttribute("disabled", true);
+    document.getElementById("togglePasswords").setAttribute("disabled", true);
   }
 }
 
@@ -236,8 +244,9 @@ function TogglePasswordVisible() {
     showingPasswords = !showingPasswords;
     document.getElementById("togglePasswords").label = kSignonBundle.getString(showingPasswords ? "hidePasswords" : "showPasswords");
     document.getElementById("togglePasswords").accessKey = kSignonBundle.getString(showingPasswords ? "hidePasswordsAccessKey" : "showPasswordsAccessKey");
-    document.getElementById("passwordCol").hidden = !showingPasswords;
-    _filterPasswords();
+    if (!showingPasswords) {
+      _filterPasswords();
+    }
   }
 
   // Notify observers that the password visibility toggling is

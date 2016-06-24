@@ -3693,7 +3693,13 @@ nsTreeBodyFrame::PaintText(int32_t              aRowIndex,
   nsAutoString text;
   mView->GetCellText(aRowIndex, aColumn, text);
 
-  if (aColumn->Type() == nsITreeColumn::TYPE_PASSWORD) {
+  nsAutoString properties;
+  mView->GetCellProperties(aRowIndex, aColumn, properties);
+  nsTreeUtils::TokenizeProperties(properties, mScratchArray);
+
+  NS_NAMED_LITERAL_STRING(plainText, "plainText");
+
+  if (aColumn->Type() == nsITreeColumn::TYPE_PASSWORD && !properties.Equals(plainText)) {
     nsTextEditRules::FillBufWithPWChars(&text, text.Length());
   }
 

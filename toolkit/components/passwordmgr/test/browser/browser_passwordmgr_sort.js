@@ -92,6 +92,7 @@ function test() {
                     func();
                 }
             }, "passwordmgr-password-toggle-complete", false);
+            pwmgrdlg.signonsTreeView.selection.rangedSelect(0, 9, true);
 
             EventUtils.synthesizeMouse(toggleButton, 1, 1, {}, win);
         }

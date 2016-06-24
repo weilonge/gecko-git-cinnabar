@@ -50,7 +50,7 @@ function test() {
             assertMenuitemEnabled("copyusername", false, "empty username");
             assertMenuitemEnabled("editusername", true);
             assertMenuitemEnabled("copypassword", true);
-            assertMenuitemEnabled("editpassword", false, "password column hidden");
+            assertMenuitemEnabled("editpassword", true, "password column hidden");
 
             info("Clear the selection");
             selection.clearSelection();
