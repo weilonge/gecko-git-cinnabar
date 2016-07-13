@@ -109,6 +109,12 @@
 <!ENTITY downloadsHistory.label           "Show All Downloads">
 <!ENTITY downloadsHistory.accesskey       "S">
 
+<!ENTITY downloadFooterSubPanelButton.accesskey       "P">
+
+<!ENTITY clearPreviewPanelButton.label       "Clear Preview Panel">
+
+<!ENTITY openDownloadsFolderButton.label       "Open Downloads Folder">
+
 <!ENTITY clearDownloadsButton.label       "Clear Downloads">
 <!ENTITY clearDownloadsButton.tooltip     "Clears completed, canceled and failed downloads">
 

@@ -78,6 +78,8 @@ XPCOMUtils.defineLazyModuleGetter(this, "PlacesUtils",
 XPCOMUtils.defineLazyModuleGetter(this, "Services",
                                   "resource://gre/modules/Services.jsm");
 
+const nsIDM = Ci.nsIDownloadManager;
+
 ////////////////////////////////////////////////////////////////////////////////
 //// DownloadsPanel
 
@@ -523,6 +525,20 @@ const DownloadsPanel = {
     }
   },
 
+  clearPreviewPanel() {
+    DownloadsCommon.getData(window).removeFinished();
+    this.hidePanel();
+  },
+
+  openDownloadsFolder() {
+    Downloads.getPreferredDownloadsDirectory().then(downloadsPath => {
+      let file = new FileUtils.File(downloadsPath);
+      DownloadsCommon.showDownloadedFile(file);
+      this.hidePanel();
+      return;
+    });
+  },
+
   /**
    * Opens the downloads panel when data is ready to be displayed.
    */
@@ -715,6 +731,8 @@ const DownloadsView = {
     // DownloadsSummary. The DownloadsSummary will determine whether or not
     // it's appropriate to actually display the summary.
     DownloadsSummary.active = hiddenCount > 0;
+    DownloadsSummary.showingClearPreviewPanelItem =
+      DownloadsCommon.getData(window).canRemoveFinished;
   },
 
   /**
@@ -809,6 +827,8 @@ const DownloadsView = {
     if (viewItem) {
       viewItem.onStateChanged();
     }
+    DownloadsSummary.showingClearPreviewPanelItem =
+      DownloadsCommon.getData(window).canRemoveFinished;
   },
 
   onDownloadChanged(download) {
@@ -1308,6 +1328,10 @@ const DownloadsSummary = {
   },
 
   _active: false,
+
+  set showingClearPreviewPanelItem(aShowingItem) {
+    document.getElementById("clearPreviewPanelButton").setAttribute("hidden", !aShowingItem);
+  },
 
   /**
    * Sets whether or not we show the progress bar.

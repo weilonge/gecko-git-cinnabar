@@ -149,10 +149,22 @@
               </vbox>
             </hbox>
             <button id="downloadsHistory"
+                    type="menu-button"
                     class="plain downloadsPanelFooterButton"
+                    popup="downloadSubPanel"
                     label="&downloadsHistory.label;"
                     accesskey="&downloadsHistory.accesskey;"
-                    oncommand="DownloadsPanel.showDownloadsHistory();"/>
+                    oncommand="DownloadsPanel.showDownloadsHistory();">
+              <menupopup id="downloadSubPanel" position="after_end">
+                <menuitem id="clearPreviewPanelButton"
+                          oncommand="DownloadsPanel.clearPreviewPanel();event.stopPropagation();"
+                          hidden="true"
+                          label="&clearPreviewPanelButton.label;"/>
+                <menuitem id="openDownloadsFolderButton"
+                          oncommand="DownloadsPanel.openDownloadsFolder();event.stopPropagation();"
+                          label="&openDownloadsFolderButton.label;"/>
+              </menupopup>
+            </button>
           </vbox>
         </panelview>
 

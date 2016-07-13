@@ -24,6 +24,43 @@ richlistitem[type="download"].download-state[state="1"]:not([exists]) .downloadS
   display: none;
 }
 
+#downloadsHistory {
+  height: 40px;
+}
+
+#downloadsHistory .button-menubutton-button {
+  -moz-appearance: none !important;
+  background-color: transparent;
+  border: none;
+}
+
+#downloadsPanel[hasdownloads] #downloadsHistory .button-menubutton-button {
+  padding-left: 58px;
+}
+
+#downloadsHistory .button-menubutton-dropmarker {
+  -moz-appearance: none !important;
+  border-left: 1px solid rgb(212, 212, 212);
+  border-right: 1px solid transparent;
+  width: 56px;
+  padding-bottom: 1px;
+  padding-top: 1px;
+  margin-bottom: 4px;
+  margin-top: 4px;
+}
+
+#downloadsHistory .dropmarker-icon {
+  margin: 0;
+  list-style-image: url("chrome://browser/skin/downloads/button_more.svg");
+  filter: url("chrome://browser/skin/filters.svg#fill");
+  fill: rgb(133, 133, 133);
+  -moz-image-region: rect(0px, 16px, 16px, 0px);
+  -moz-appearance: none;
+  min-width: 0;
+  width: 16px;
+  height: 16px;
+}
+
 /*** Downloads View ***/
 
 /**

@@ -30,7 +30,8 @@
 }
 
 #emptyDownloads {
-  padding: 10px 20px;
+  height: 40px;
+  padding: 16px 20px;
   /* The panel can be wider than this description after the blocked subview is
      shown, so center the text. */
   text-align: center;

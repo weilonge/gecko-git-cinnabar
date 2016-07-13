@@ -6,6 +6,11 @@
 
 /*** Panel and outer controls ***/
 
+#downloadsHistory .button-menubutton-dropmarker {
+  /* Force the dropmarker image to align center */
+  padding-left: 21px;
+}
+
 @keyfocus@ #downloadsSummary:focus,
 @keyfocus@ .downloadsPanelFooterButton:focus {
   outline: 1px -moz-dialogtext dotted;
