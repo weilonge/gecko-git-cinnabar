@@ -101,6 +101,7 @@
 }
 
 #downloadsSummary > .downloadTypeIcon {
+  margin-right: -4px;
   list-style-image: url("chrome://browser/skin/downloads/download-summary.png");
 }
 
